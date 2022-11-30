@@ -15,6 +15,15 @@ def sample_data(data_dict, sample_rate = 128):
 
     return data_dict, sample_rate, sample_factor
 
+def train_test_split(x, t, ratio = 0.95):
+    train_size = int(x.shape[0] * ratio)
+    train_x = x[:train_size]
+    train_t = t[:train_size]
+    test_x = x[train_size:]
+    test_t = t[train_size:]
+
+    return train_x, train_t, test_x, test_t
+
 def shuffle_data(x, t):
     idx = np.arange(t.shape[0])
     np.random.shuffle(idx)
@@ -42,9 +51,9 @@ def normalize(data):
     
     return data
 
-def load_data(file_name):
+def load_data(file_name, sample_rate = 128):
     data_dict = mat73.loadmat(file_name)
-    data_dict, sample_rate, sample_factor = sample_data(data_dict)
+    data_dict, sample_rate, sample_factor = sample_data(data_dict, sample_rate=sample_rate)
     num_points = len(data_dict['dataConcat'])
     target_frame_count = sample_rate * 5
 
